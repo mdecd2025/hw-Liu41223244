@@ -142,21 +142,65 @@ img.add_border {
           </div>
           
         </header>
-    <div id="tipue_search_content"> <a href='repo.html'>Next</a> >> repo<br /><h1>About</h1>
-<p>課程名稱: 協同產品設計實習 - Collaborative Product Design Practice</p>
-<p>學員作業網站:<a href="https://mdecd2025.github.io/hw-Liu41223244">https://mdecd2025.github.io/hw-Liu41223244</a></p>
-<p>學員作業倉儲:<a href="https://github.com/mdecd2025/hw-Liu41223244">https://github.com/mdecd2025/hw-Liu41223244</a></p>
-<hr/>
-<p>課程代號: cd2025</p>
-<p>Teams 線上教學:</p>
-<p style="padding-left: 30px;">以 "學號@nfu.edu.tw" 登入<span> </span><a href="https://login.microsoftonline.com/">https://login.microsoftonline.com/</a><span> </span>Office 365</p>
-<p style="padding-left: 30px;">Teams 團隊代碼: <span>p5z4eku</span></p>
-<hr/>
-<p>課程評分:</p>
-<p style="padding-left: 30px;">Homework (30%) - 每週至少提交兩次與課程進度有關的內容, 完成後填回自評表單</p>
-<p style="padding-left: 30px;">Exam (40%) - 建立包含操作流程影片、心得以及提供檔案下載的網頁後填回自評表單</p>
-<p style="padding-left: 30px;">Final Report (30%) - 利用網頁內容進行簡報並提交 pdf 格式書面報告, 完成後填回自評表單</p>
-<br /> <a href='repo.html'>Next</a> >> repo</div>
+    <div id="tipue_search_content">Midterm << <a href='Midterm.html'>Previous</a> <a href='Exam.html'>Next</a> >> Exam<br /><h1>links</h1>
+<p></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">from browser import html, document
+import urllib.request
+ 
+# 学员名单的 URL
+student_list_url = "https://raw.githubusercontent.com/mdecycu/list/main/2b.txt"
+ 
+# 读取学员名单
+response = urllib.request.urlopen(student_list_url)
+data = response.read()
+ 
+# 如果是 bytes，则解码
+if isinstance(data, bytes):
+    data = data.decode("utf-8")
+ 
+# 分行
+data = data.splitlines()
+ 
+# 检查数据是否有效
+if len(data) &gt; 0:
+    all_stud = data  # 假设没有标题行
+    print("总共有 " + str(len(all_stud)) + " 名学员")
+else:
+    print("无有效学员资料")
+    all_stud = []
+ 
+# 插入 HTML 内容
+brython_div1 = document["brython_div1"]
+ 
+# 创建学员超链接（直排显示）
+for index, student in enumerate(all_stud, start=1):
+    student_info = student.strip().split()  # 以空格分隔学号、GitHub 用户名
+ 
+    if len(student_info) &lt; 2:
+        continue  # 如果数据不完整，则跳过该行
+ 
+    student_id = student_info[0]  # 学号
+    github_username = student_info[1]  # GitHub 用户名
+    repo_name = f"hw-{github_username}"  # 统一按照 "hw-帳號名稱" 命名
+ 
+    # 个人网站超链接（按照 "https://mdecd2025.github.io/hw-學號/content/index.html"）
+    personal_site = f"https://mdecd2025.github.io/hw-{student_id}/content/index.html"
+    personal_link = html.A(student_id, href=personal_site, target="_blank")
+ 
+    # GitHub 仓库超链接（固定组织名称 mdecd2025）
+    github_repo = f"https://github.com/mdecd2025/{repo_name}"
+    github_link = html.A("[GitHub]", href=github_repo, target="_blank")
+ 
+    # 每行显示：序号 学员网站 | GitHub
+    line = html.P()
+    line &lt;= f"{index}. "  # 插入序号
+    line &lt;= personal_link  # 插入学员网站链接
+    line &lt;= " | "  # 插入分隔符
+    line &lt;= github_link  # 插入 GitHub 链接
+ 
+    # 将这一行插入到 HTML 中
+    brython_div1 &lt;= line</pre>
+<br />Midterm << <a href='Midterm.html'>Previous</a> <a href='Exam.html'>Next</a> >> Exam</div>
         
     <!-- footer -->
       <div class="container">

@@ -67,6 +67,64 @@
 <p>期中自評影片:</p>
 <p></p>
 <p style="padding-left: 30px;"></p>
+<h1>links</h1>
+<p></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">from browser import html, document
+import urllib.request
+ 
+# 学员名单的 URL
+student_list_url = "https://raw.githubusercontent.com/mdecycu/list/main/2b.txt"
+ 
+# 读取学员名单
+response = urllib.request.urlopen(student_list_url)
+data = response.read()
+ 
+# 如果是 bytes，则解码
+if isinstance(data, bytes):
+    data = data.decode("utf-8")
+ 
+# 分行
+data = data.splitlines()
+ 
+# 检查数据是否有效
+if len(data) &gt; 0:
+    all_stud = data  # 假设没有标题行
+    print("总共有 " + str(len(all_stud)) + " 名学员")
+else:
+    print("无有效学员资料")
+    all_stud = []
+ 
+# 插入 HTML 内容
+brython_div1 = document["brython_div1"]
+ 
+# 创建学员超链接（直排显示）
+for index, student in enumerate(all_stud, start=1):
+    student_info = student.strip().split()  # 以空格分隔学号、GitHub 用户名
+ 
+    if len(student_info) &lt; 2:
+        continue  # 如果数据不完整，则跳过该行
+ 
+    student_id = student_info[0]  # 学号
+    github_username = student_info[1]  # GitHub 用户名
+    repo_name = f"hw-{github_username}"  # 统一按照 "hw-帳號名稱" 命名
+ 
+    # 个人网站超链接（按照 "https://mdecd2025.github.io/hw-學號/content/index.html"）
+    personal_site = f"https://mdecd2025.github.io/hw-{student_id}/content/index.html"
+    personal_link = html.A(student_id, href=personal_site, target="_blank")
+ 
+    # GitHub 仓库超链接（固定组织名称 mdecd2025）
+    github_repo = f"https://github.com/mdecd2025/{repo_name}"
+    github_link = html.A("[GitHub]", href=github_repo, target="_blank")
+ 
+    # 每行显示：序号 学员网站 | GitHub
+    line = html.P()
+    line &lt;= f"{index}. "  # 插入序号
+    line &lt;= personal_link  # 插入学员网站链接
+    line &lt;= " | "  # 插入分隔符
+    line &lt;= github_link  # 插入 GitHub 链接
+ 
+    # 将这一行插入到 HTML 中
+    brython_div1 &lt;= line</pre>
 <h1>Exam</h1>
 <p>Exam1 (10%): 建立 Webots 基本物件模擬場景</p>
 <p style="padding-left: 30px;">各學員利用 Webots R2025a 套件中的 Shape 物件, 隨堂建立指定的機電系統模擬場景, 並利用 Python 程式進行互動控制.</p>
